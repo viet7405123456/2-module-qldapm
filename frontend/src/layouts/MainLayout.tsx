@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout, Menu, Button, Space, Avatar, Dropdown } from 'antd';
+import { Layout, Menu, Button, Space, Avatar, Dropdown, Row, Col, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
@@ -11,11 +11,20 @@ import {
   ScheduleOutlined,
   LogoutOutlined,
   HomeOutlined,
+  EnvironmentOutlined,
+  PhoneOutlined,
+  MailOutlined,
+  ClockCircleOutlined,
+  FacebookOutlined,
+  TwitterOutlined,
+  InstagramOutlined,
+  YoutubeOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../context/AuthContext';
 import { BRAND_GRADIENT } from '../theme';
 
 const { Header, Content, Footer } = Layout;
+const { Title: FooterTitle, Text: FooterText } = Typography;
 
 export default function MainLayout() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -135,8 +144,87 @@ export default function MainLayout() {
       >
         <Outlet />
       </Content>
-      <Footer style={{ textAlign: 'center', color: '#94a3b8', background: 'transparent' }}>
-        Website Đăng ký Khám chữa bệnh © {new Date().getFullYear()}
+      <Footer className="site-footer">
+        <Row gutter={[32, 32]}>
+          <Col xs={24} md={8}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+              <div
+                style={{
+                  width: 36,
+                  height: 36,
+                  borderRadius: 10,
+                  background: BRAND_GRADIENT,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: '#fff',
+                  fontSize: 18,
+                  flexShrink: 0,
+                }}
+              >
+                <MedicineBoxOutlined />
+              </div>
+              <span style={{ fontWeight: 700, fontSize: 16, color: '#fff' }}>Phòng khám Đa khoa</span>
+            </div>
+            <FooterText style={{ color: 'rgba(255,255,255,0.65)' }}>
+              Chúng tôi cam kết mang đến dịch vụ chăm sóc sức khỏe chất lượng cao, đặt lịch khám nhanh chóng và
+              minh bạch cho bạn và gia đình.
+            </FooterText>
+            <div className="footer-social" style={{ marginTop: 18 }}>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Facebook">
+                <FacebookOutlined />
+              </a>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Twitter">
+                <TwitterOutlined />
+              </a>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Instagram">
+                <InstagramOutlined />
+              </a>
+              <a href="#" onClick={(e) => e.preventDefault()} aria-label="Youtube">
+                <YoutubeOutlined />
+              </a>
+            </div>
+          </Col>
+
+          <Col xs={24} md={8}>
+            <FooterTitle level={5}>Liên kết nhanh</FooterTitle>
+            <Space direction="vertical" size={10}>
+              <Link to="/">Trang chủ</Link>
+              <Link to="/register">Đăng ký tài khoản</Link>
+              <Link to="/login">Đăng nhập</Link>
+              {isAuthenticated && user?.role === 'PATIENT' && <Link to="/booking">Đặt lịch khám</Link>}
+            </Space>
+          </Col>
+
+          <Col xs={24} md={8}>
+            <FooterTitle level={5}>Thông tin liên hệ</FooterTitle>
+            <Space direction="vertical" size={12}>
+              <Space align="start">
+                <EnvironmentOutlined style={{ marginTop: 4 }} />
+                <FooterText style={{ color: 'rgba(255,255,255,0.65)' }}>
+                  123 Đường ABC, Quận XYZ, TP. HCM
+                </FooterText>
+              </Space>
+              <Space align="start">
+                <PhoneOutlined style={{ marginTop: 4 }} />
+                <FooterText style={{ color: 'rgba(255,255,255,0.65)' }}>(012) 345 6789</FooterText>
+              </Space>
+              <Space align="start">
+                <MailOutlined style={{ marginTop: 4 }} />
+                <FooterText style={{ color: 'rgba(255,255,255,0.65)' }}>lienhe@phongkhamdakhoa.vn</FooterText>
+              </Space>
+              <Space align="start">
+                <ClockCircleOutlined style={{ marginTop: 4 }} />
+                <FooterText style={{ color: 'rgba(255,255,255,0.65)' }}>
+                  T2 - T6: 8:00 - 17:00 · T7: 8:00 - 12:00
+                </FooterText>
+              </Space>
+            </Space>
+          </Col>
+        </Row>
+        <div className="footer-bottom">
+          Website Đăng ký Khám chữa bệnh © {new Date().getFullYear()}. All rights reserved.
+        </div>
       </Footer>
     </Layout>
   );
